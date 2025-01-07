@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useReducer } from "react";
 import Form from "./Form";
 
+const booksReducer = () => {}
+
 function App() {
-  const [books, setBooks] = useState([
+  const [books, dispatch] = useReducer(booksReducer, [
     {
       id: crypto.randomUUID(),
       text: "The Great Gatsby",
@@ -54,7 +56,8 @@ function App() {
         <h1>Booker</h1>
       </header>
 
-      <Form onSubmit={addBook} onSort={handleSort} />
+      <Form onSubmit={(name) => dispatch({type: "ADD", payload: name})}
+       onSort={() => dispatch ({type: "SORT"})} />
 
       {books.map((book) => (
         <pre key={book.id}>
@@ -62,7 +65,7 @@ function App() {
           <p>{book.likes}</p>
 
           <div style={{ display: "flex", gap: "5px" }}>
-            <button onClick={() => likeBook(book.id)}>Like</button>
+            <button onClick={() => dispatch({type: "LIKE", payload: book.id})}>Like</button>
             <button onClick={() => dislikeBook(book.id)}>Dislike</button>
             <button onClick={() => deleteBook(book.id)}>Delete</button>
           </div>
